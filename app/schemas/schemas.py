@@ -12,7 +12,7 @@ class DishOut(DishIn):
 
     @field_validator('price')
     def round_price(cls, v: float):
-        return f'{v: .2f}'
+        return f'{v:.2f}'
 
 
 class SubmenuIn(BaseModel):
