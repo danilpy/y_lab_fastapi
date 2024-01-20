@@ -44,9 +44,9 @@ repos:
         args: ["--ignore=E501,F821", "--max-line-length=120"]
 
 # Проверка статических типов с помощью mypy
-#-   repo: https://github.com/pre-commit/mirrors-mypy
-#    rev: v0.991
-#    hooks:
-#    -   id: mypy
-#        exclude: 'migrations|tests'
-#        additional_dependencies: [types-requests, types-redis]
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.991
+    hooks:
+    -   id: mypy
+        exclude: 'migrations|tests'
+        additional_dependencies: [types-requests, types-redis]
