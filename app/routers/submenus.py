@@ -1,6 +1,6 @@
 import uuid
 
-from fastapi import Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -8,16 +8,17 @@ from sqlalchemy.orm import selectinload
 from app.database.database import get_async_session
 from app.models.models import Submenu
 from app.schemas import schemas
-from main import BASE_API_URL, app
+
+submenu_router = APIRouter(prefix='/api/v1/menus/{target_menu_id}/submenus')
 
 
-@app.get(BASE_API_URL + 'menus/{menu_id}/submenus', response_model=list[schemas.SubmenuOut])
+@submenu_router.get('menus/{menu_id}/submenus', response_model=list[schemas.SubmenuOut])
 async def get_list_submenus(menu_id: uuid.UUID, session: AsyncSession = Depends(get_async_session)):
     res = await session.execute(select(Submenu).options(selectinload(Submenu.dishes)).where(Submenu.menu_id == menu_id))
     return res.scalars().all()
 
 
-@app.get(BASE_API_URL + 'menus/{menu_id}/submenus/{submenu_id}', response_model=schemas.SubmenuOut, )
+@submenu_router.get('menus/{menu_id}/submenus/{submenu_id}', response_model=schemas.SubmenuOut, )
 async def get_submenu_by_id(
         menu_id: uuid.UUID,
         submenu_id: uuid.UUID,
@@ -34,8 +35,10 @@ async def get_submenu_by_id(
     return submenu
 
 
-@app.post(
-    BASE_API_URL + 'menus/{menu_id}/submenus', response_model=schemas.SubmenuOut, status_code=status.HTTP_201_CREATED
+@submenu_router.post(
+    'menus/{menu_id}/submenus',
+    response_model=schemas.SubmenuOut,
+    status_code=status.HTTP_201_CREATED
 )
 async def create_submenu(
         submenu: schemas.SubmenuIn,
@@ -50,7 +53,7 @@ async def create_submenu(
     return res.scalars().one_or_none()
 
 
-@app.patch(BASE_API_URL + 'menus/{menu_id}/submenus/{submenu_id}', response_model=schemas.SubmenuOut, )
+@submenu_router.patch('menus/{menu_id}/submenus/{submenu_id}', response_model=schemas.SubmenuOut)
 async def update_submenu_by_id(
         submenu: schemas.SubmenuIn,
         menu_id: uuid.UUID,
@@ -71,7 +74,7 @@ async def update_submenu_by_id(
     return result
 
 
-@app.delete(BASE_API_URL + 'menus/{menu_id}/submenus/{submenu_id}')
+@submenu_router.delete('menus/{menu_id}/submenus/{submenu_id}')
 async def delete_submenu_by_id(
         menu_id: uuid.UUID,
         submenu_id: uuid.UUID,
