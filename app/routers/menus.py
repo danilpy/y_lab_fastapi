@@ -19,7 +19,7 @@ async def get_list_menus(session: AsyncSession = Depends(get_async_session)) -> 
     return res.scalars().all()
 
 
-@menus_router.get('menus/{menu_id}', response_model=schemas.MenuOut)
+@menus_router.get('/menus/{menu_id}', response_model=schemas.MenuOut)
 async def get_menu_by_id(menu_id: uuid.UUID, session: AsyncSession = Depends(get_async_session)):
     res = await session.execute(
         select(Menu)
@@ -32,7 +32,7 @@ async def get_menu_by_id(menu_id: uuid.UUID, session: AsyncSession = Depends(get
     return menu
 
 
-@menus_router.post('menus', response_model=schemas.MenuOut, status_code=status.HTTP_201_CREATED)
+@menus_router.post('/menus', response_model=schemas.MenuOut, status_code=status.HTTP_201_CREATED)
 async def create_menu(menu: schemas.MenuIn, session: AsyncSession = Depends(get_async_session)) -> Menu:
     new_menu = Menu(id=uuid.uuid4(), title=menu.title, description=menu.description)
     session.add(new_menu)
@@ -44,7 +44,7 @@ async def create_menu(menu: schemas.MenuIn, session: AsyncSession = Depends(get_
     return res.scalars().one_or_none()
 
 
-@menus_router.patch('menus/{menu_id}', response_model=schemas.MenuOut)
+@menus_router.patch('/menus/{menu_id}', response_model=schemas.MenuOut)
 async def update_menu_by_id(
         menu: schemas.MenuIn,
         menu_id: uuid.UUID,
@@ -64,7 +64,7 @@ async def update_menu_by_id(
     return result
 
 
-@menus_router.delete('menus/{menu_id}')
+@menus_router.delete('/menus/{menu_id}')
 async def delete_menu_by_id(menu_id: uuid.UUID, session: AsyncSession = Depends(get_async_session)) -> dict:
     res = await session.execute(select(Menu).where(Menu.id == menu_id))
     result = res.scalars().one_or_none()

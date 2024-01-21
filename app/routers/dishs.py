@@ -1,17 +1,18 @@
 from typing import Sequence
 from uuid import UUID, uuid4
 
-from fastapi import Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.database import get_async_session
 from app.models.models import Dish, Submenu
 from app.schemas import schemas
-from main import BASE_API_URL, app
+
+dish_router = APIRouter(prefix='/api/v1/menus/{target_menu_id}/submenus/{target_submenu_id}/dishes')
 
 
-@app.get(BASE_API_URL + 'menus/{menu_id}/submenus/{submenu_id}/dishes', response_model=list[schemas.DishOut], )
+@dish_router.get('menus/{menu_id}/submenus/{submenu_id}/dishes', response_model=list[schemas.DishOut], )
 async def get_list_dishes(
         menu_id: UUID,
         submenu_id: UUID,
@@ -25,7 +26,7 @@ async def get_list_dishes(
     return res.scalars().all()
 
 
-@app.get(BASE_API_URL + 'menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}', response_model=schemas.DishOut)
+@dish_router.get('menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}', response_model=schemas.DishOut)
 async def get_dish_by_id(
         menu_id: UUID,
         submenu_id: UUID,
@@ -47,8 +48,8 @@ async def get_dish_by_id(
     return dish
 
 
-@app.post(
-    BASE_API_URL + 'menus/{menu_id}/submenus/{submenu_id}/dishes',
+@dish_router.post(
+    'menus/{menu_id}/submenus/{submenu_id}/dishes',
     response_model=schemas.DishOut,
     status_code=status.HTTP_201_CREATED,
 )
@@ -74,7 +75,7 @@ async def create_dish(
     return new_dish
 
 
-@app.patch(BASE_API_URL + 'menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}', response_model=schemas.DishOut)
+@dish_router.patch('menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}', response_model=schemas.DishOut)
 async def update_dish_by_id(
         dish: schemas.DishIn,
         menu_id: UUID,
@@ -100,7 +101,7 @@ async def update_dish_by_id(
     return result
 
 
-@app.delete(BASE_API_URL + 'menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}')
+@dish_router.delete('menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}')
 async def delete_dish_by_id(
         menu_id: UUID,
         submenu_id: UUID,
