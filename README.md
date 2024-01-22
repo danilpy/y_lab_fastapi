@@ -12,7 +12,7 @@ source venv/bin/activate  # Для Windows: venv\Scripts\activate
 ```
 5. Установите все зависимости
 ```
-pip intall -r requirements.txt
+pip install -r requirements.txt
 ```
 6. Примените миграцию
 ```
