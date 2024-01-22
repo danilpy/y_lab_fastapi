@@ -1,17 +1,17 @@
-"""Database creation
+"""Database
 
-Revision ID: 36b7014c5e0e
+Revision ID: 4fdfca6cf7a4
 Revises:
-Create Date: 2024-01-20 16:16:12.475552
+Create Date: 2024-01-22 22:48:07.524416
 
 """
-from typing import Sequence
+from typing import Sequence, Union
 
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = '36b7014c5e0e'
+revision: str = '4fdfca6cf7a4'
 down_revision: str | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
