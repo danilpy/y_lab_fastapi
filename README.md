@@ -16,7 +16,7 @@ pip install -r requirements.txt
 ```
 6. Примените миграцию
 ```
-alembic upgrade 36b7014c5e0e
+alembic upgrade head
 ```
 7. Запустите сервер
 ```python
