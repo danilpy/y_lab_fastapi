@@ -1,28 +1,11 @@
-from dataclasses import dataclass
+import os
 
-from environs import Env
+from dotenv import load_dotenv
 
+load_dotenv()
 
-@dataclass
-class DatabaseConfig:
-    postgres_user: str
-    postgres_password: str
-    postgres_db: str
-    postgres_host: str
-
-
-@dataclass
-class Config:
-    db: DatabaseConfig
-
-
-def load_config(path: str | None = None) -> Config:
-    env: Env = Env()
-    env.read_env(path)
-
-    return Config(db=DatabaseConfig(
-        postgres_user=env('DB_USER'),
-        postgres_password=env('DB_PASS'),
-        postgres_db=env('DB_NAME'),
-        postgres_host=env('DB_HOST')
-    ))
+DB_HOST = os.environ.get('DB_HOST')
+DB_PORT = os.environ.get('DB_PORT')
+DB_NAME = os.environ.get('DB_NAME')
+DB_USER = os.environ.get('DB_USER')
+DB_PASS = os.environ.get('DB_PASS')
