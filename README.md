@@ -1,4 +1,4 @@
-Запуск проекта
+# Запуск проекта
 1. Склонируйте репозиторий
 git clone https://github.com/danilpy/y_lab_fastapi
 2. Подготовьте базу данных (PostgreSQL)
